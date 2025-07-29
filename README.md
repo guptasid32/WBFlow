@@ -66,6 +66,33 @@ python test_images.py
 python train.py --training_dir --data-name --test-name
 ```
 
+## Exporting to ONNX
+The `torch.linalg.qr` operator used in the original implementation prevented
+exporting the network. The QR step is now replaced with weight normalisation so
+the model can be exported.
+
+Run the following command to generate an ONNX model:
+
+```bash
+python export_onnx.py --weights best_model.tar --output wbflow.onnx
+```
+
+## Running inference in C++
+Download the prebuilt ONNX Runtime package and build the example:
+
+```bash
+# get ONNX Runtime
+curl -L https://github.com/microsoft/onnxruntime/releases/download/v1.17.0/onnxruntime-linux-x64-1.17.0.tgz \
+  | tar xz
+# compile the demo
+g++ onnx_inference.cpp \
+    -I onnxruntime-linux-x64-1.17.0/include \
+    -L onnxruntime-linux-x64-1.17.0/lib -lonnxruntime \
+    -o onnx_inference
+# run it
+LD_LIBRARY_PATH=onnxruntime-linux-x64-1.17.0/lib ./onnx_inference wbflow.onnx
+```
+
 # Citation
 * Paper is available: [paper link](https://github.com/ChunxiaoLe/SWBNet/blob/master/paper/9786.ChunxiaoLi.pdf)
 * Citing format is coming soon...

@@ -468,7 +468,10 @@ class Camera_Glow_norev_re(nn.Module):
 
         "camera transformation"
         tran_weight = self.cam(camidx)
-        tran_weight, _ = torch.linalg.qr(tran_weight)
+        # QR decomposition is unsupported in ONNX. Normalizing the weights
+        # serves as a lightweight alternative to keep them bounded while
+        # allowing model export.
+        tran_weight = F.normalize(tran_weight, dim=1)
         tran_weight = torch.reshape(tran_weight, (-1, 48, 1, 1, 1))
         b = tran_weight.shape[0]
 
