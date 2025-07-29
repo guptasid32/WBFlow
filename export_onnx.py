@@ -3,6 +3,7 @@ import torch
 from torch import nn
 from glow_wb import Camera_Glow_norev_re
 
+
 class WBFlowWrapper(nn.Module):
     def __init__(self, glow_model):
         super().__init__()
@@ -45,6 +46,7 @@ def main():
         input_names=['input', 'camidx'],
         output_names=['output'],
     )
+
 
 if __name__ == '__main__':
     main()

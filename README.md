@@ -67,6 +67,7 @@ python train.py --training_dir --data-name --test-name
 ```
 
 ## Exporting to ONNX
+
 The `torch.linalg.qr` operator used in the original implementation prevented
 exporting the network. The QR step is now replaced with weight normalisation so
 the model can be exported.
@@ -76,6 +77,7 @@ Run the following command to generate an ONNX model:
 ```bash
 python export_onnx.py --weights best_model.tar --output wbflow.onnx
 ```
+
 
 ## Running inference in C++
 Download the prebuilt ONNX Runtime package and build the example:
